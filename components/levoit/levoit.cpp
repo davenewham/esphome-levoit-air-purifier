@@ -64,7 +64,18 @@ void Levoit::maint_task_() {
       uint32_t previousState = current_state_;
 
       bool wifiConnected = wifi::global_wifi_component->is_connected();
-      bool haConnected = wifiConnected && esphome::api::global_api_server != nullptr && api::global_api_server->is_connected();
+      // ESPHome makes some "preprocessor symbols" available during compilation time and the compiler can access and use those vars to make decisions.
+      // In this case, define haConnected depending on whether the API or MQTT is being used.
+      #if defined(USE_API)
+         // If the API component is present, that will be used to define the haConnected variable.
+         bool haConnected = wifiConnected && esphome::api::global_api_server != nullptr && api::global_api_server->is_connected();
+      #elif defined(USE_MQTT)
+         // If the API component is not present, and the MQTT component is present, the MQTT component will be used to define the haConnected variable.
+         bool haConnected = wifiConnected && esphome::mqtt::global_mqtt_client && esphome::mqtt::global_mqtt_client->is_connected();
+      #else
+         // And this catches the edge case of having neither the API or MQTT component.
+         bool haConnected = false;
+      #endif
       bool wifiSolid = wifiConnected && haConnected;
       bool wifiFlash = wifiConnected && !haConnected;
       bool wifiOff = !wifiConnected && !haConnected;

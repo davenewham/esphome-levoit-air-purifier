@@ -58,16 +58,16 @@ void LevoitFan::setup() {
     case LevoitDeviceModel::CORE_600S:
     case LevoitDeviceModel::CORE_400S:
       this->traits_ = fan::FanTraits(false, true, false, 4);
-      this->traits_.set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+      this->set_supported_preset_modes({"Manual", "Sleep", "Auto"});
       break;
     case LevoitDeviceModel::CORE_300S:
       this->traits_ = fan::FanTraits(false, true, false, 3);
-      this->traits_.set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+      this->set_supported_preset_modes({"Manual", "Sleep", "Auto"});
       break;
     case LevoitDeviceModel::CORE_200S:
     default:
       this->traits_ = fan::FanTraits(false, true, false, 3);
-      this->traits_.set_supported_preset_modes({"Manual", "Sleep"});
+      this->set_supported_preset_modes({"Manual", "Sleep"});
       break;
   }
 }

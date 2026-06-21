@@ -55,18 +55,31 @@ void LevoitFan::setup() {
 
   // Construct traits
   switch (this->parent_->device_model_) {
+    case LevoitDeviceModel::CORE_600S:
     case LevoitDeviceModel::CORE_400S:
       this->traits_ = fan::FanTraits(false, true, false, 4);
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026, 4, 0)
+      this->set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+#else
       this->traits_.set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+#endif
       break;
     case LevoitDeviceModel::CORE_300S:
       this->traits_ = fan::FanTraits(false, true, false, 3);
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026, 4, 0)
+      this->set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+#else
       this->traits_.set_supported_preset_modes({"Manual", "Sleep", "Auto"});
+#endif
       break;
     case LevoitDeviceModel::CORE_200S:
     default:
       this->traits_ = fan::FanTraits(false, true, false, 3);
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026, 4, 0)
+      this->set_supported_preset_modes({"Manual", "Sleep"});
+#else
       this->traits_.set_supported_preset_modes({"Manual", "Sleep"});
+#endif
       break;
   }
 }
